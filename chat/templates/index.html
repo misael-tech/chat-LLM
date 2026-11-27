@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Misael</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -14,79 +16,252 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 16px;
+            color: #1e293b;
         }
 
         .chat-container {
             width: 100%;
-            max-width: 600px;
-            height: 90vh;
-            background: white;
-            border-radius: 12px;
+            max-width: 640px;
+            height: 88vh;
+            max-height: 820px;
+            background: #ffffff;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.15), 0 0 1px rgba(15, 23, 42, 0.1);
+            position: relative;
+        }
+
+        /* Estilização do link/botão Voltar integrado ao topo */
+        .chat-container > a {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+        .chat-container > a button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+        }
+
+        .chat-container > a button::before {
+            content: "←";
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .chat-container > a button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-2px);
         }
 
         .chat-header {
-            background: #202124;
-            color: white;
-            padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 24px 20px 22px;
             text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .chat-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-header p::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
         }
 
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar personalizada */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
         .message {
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            max-width: 85%;
-            line-height: 1.5;
+            padding: 13px 17px;
+            border-radius: 16px;
+            max-width: 80%;
+            line-height: 1.55;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+            animation: messageFadeIn 0.25s ease-out forwards;
+        }
+
+        @keyframes messageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .user {
-            background: #dbeafe;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
             margin-left: auto;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .bot {
-            background: #f1f1f1;
+            background: #ffffff;
+            color: #1e293b;
             margin-right: auto;
+            border-bottom-left-radius: 4px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
         }
 
         .chat-form {
             display: flex;
-            gap: 10px;
-            padding: 15px;
-            border-top: 1px solid #ddd;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            align-items: center;
         }
 
         .chat-form input {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            padding: 13px 18px;
+            background: #f1f5f9;
+            border: 1.5px solid transparent;
+            border-radius: 12px;
             outline: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #0f172a;
+            transition: all 0.2s ease;
+        }
+
+        .chat-form input::placeholder {
+            color: #64748b;
+        }
+
+        .chat-form input:focus {
+            background: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .chat-form button {
-            padding: 12px 20px;
-            background: #202124;
-            color: white;
+            padding: 13px 22px;
+            background: #0f172a;
+            color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+        }
+
+        .chat-form button:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
+        }
+
+        .chat-form button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 600px) {
+            body {
+                padding: 0;
+            }
+
+            .chat-container {
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
+            }
+
+            .chat-container > a {
+                top: 16px;
+                left: 14px;
+            }
+
+            .chat-container > a button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .chat-header {
+                padding: 54px 16px 18px;
+            }
+
+            .message {
+                max-width: 88%;
+            }
         }
     </style>
 </head>
@@ -94,6 +269,9 @@
 <body>
 
     <div class="chat-container">
+           <a href="{% url 'cadastrar_vendedor' %}">
+    <button type="button">Voltar Menu</button>
+</a>
 
         <header class="chat-header">
             <h2>Chat Misael</h2>
@@ -123,6 +301,8 @@
         </form>
 
     </div>
+
+ 
 
 
 <script>
